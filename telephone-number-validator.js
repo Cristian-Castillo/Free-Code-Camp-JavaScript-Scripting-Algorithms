@@ -38,9 +38,6 @@ function telephoneCheck(str) {
       case 1:
       isValid = true
       break
-      case -1:
-      isValid = false
-      break
       case 0:
       isValid = false
       break
@@ -55,5 +52,4 @@ function telephoneCheck(str) {
   }
   return isValid;
 }
-
 telephoneCheck("555-555-5555");
