@@ -1,6 +1,5 @@
 function rot13(str) {
-  let tempStr = ''
-  let container = []
+  let tempStr = '',container = []
   // Put string into container
   for(var j = 0; j < str.length;j++){
     tempStr = str[j]
