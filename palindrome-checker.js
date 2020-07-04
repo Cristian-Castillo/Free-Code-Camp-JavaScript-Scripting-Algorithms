@@ -22,12 +22,8 @@ function palindrome(str) {
   if(copyStr == strCompare){
     isPalindrome = true
   }
-  else{
-    isPalindrome = false
-  }
   return isPalindrome;
 }
-
 
 
 palindrome("eye");
