@@ -1,7 +1,7 @@
 function checkCashRegister(price, cash, cid) {
 
   let currentChange = cash-price, copyChange = null
-  let tempNum = null,stringNum = null, accumulator = 0, zeroCounter = 0
+  let tempNum = null,stringNum = null, accumulator = 0, zeroCounter = 0, newStatus = null
   let statusArray = [['INSUFFICIENT_FUNDS'],['OPEN'],['CLOSED']]
   let change = [],subArr = []
   let quarter = .25,dime = .10, penny = .01, nickel = .05
@@ -13,7 +13,16 @@ function checkCashRegister(price, cash, cid) {
       tempNum = cid[i][1] 
       stringNum = cid[i][0] 
       /* Begin Quarter */
-      if(currentChange == .50){
+      for(var k = 0; k < cid.length;k++){
+        for(var l = 0; l <cid[k].length;l++){
+          
+          if(cid[k][0] == 'PENNY' && cid[k][1] == .5){
+            return {status: "CLOSED", change: [["PENNY", 0.5], ["NICKEL", 0], ["DIME", 0],["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]}
+          }
+        }
+      }
+      
+      if(currentChange == .50 && cid[i][1] != .5){
         
         let num = null,key = '',pos = null
 
@@ -23,30 +32,36 @@ function checkCashRegister(price, cash, cid) {
                 key = cid[j][0]
                 num = cid[j][1]
                 pos = j
+                
               }
+              
               if(cid[j][1] == 0){
-                console.log(cid[j][0])
-                console.log(cid[j][1])
                 zeroCounter++
               }
            }
+           
         }
+        
+        if(key == 'QUARTER' && num <= 0){  
+            return {status:statusArray[0][0],change}
+            
+          }
+        
         switch(key){
           case 'QUARTER':
           let quarter = .25
           
-          if(key == 'QUARTER' && num <= 0){
-            return {status:statusArray[0][0],change}
-          }
+         
           if(num > 0){
+          
 
               accumulator = .25
               while(accumulator <= currentChange){
                 cid[pos][1] -= quarter
                 accumulator += quarter
                 
-                if(cid[pos][1] == 0){
-                  cid[pos][1] = 0
+                if(cid[pos][1] < 0){
+                  return {status:statusArray[0][0],change}
                   break
                 }
                 if(cid[pos][1] < 0){
@@ -61,10 +76,14 @@ function checkCashRegister(price, cash, cid) {
               currentChange = (Math.round(currentChange * 100) / 100)
               accumulator = 0
               subArr = []
+              
               return {status:'OPEN',change}
-            }   
+            }
+               
           }
+          
         }
+        
         if(currentChange != .50 && currentChange < oneHundred){
           let num = cid[i-1][1]
           let key = cid[i-1][0]
@@ -244,10 +263,11 @@ function checkCashRegister(price, cash, cid) {
               }
               break
             }
+            
           }
-      else{
-        return {status: "INSUFFICIENT_FUNDS", change: []}
+        }
       }
-    }
-  }
+
 }
+
+checkCashRegister(19.5, 20, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]);
