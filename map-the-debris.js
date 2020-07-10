@@ -3,7 +3,7 @@ function orbitalPeriod(arr) {
   var earthRadius = 6367.4447;
   let copyArr = [...arr]
 
-  arr.forEach((elementItem) => {
+  copyArr.forEach((elementItem) => {
      let newTemperature = Math.round(
         Math.sqrt(Math.pow(elementItem.avgAlt+earthRadius,3)/GM) * Math.PI * 2
     )
